@@ -1,0 +1,250 @@
+============================================================
+  CLASSIFICATION REPORT
+  Model : RandomForestClassifier (Tuned)
+  Run ID: 180f9664a33e4bc5b94bd688685e35c3
+=
+  CLASSIFICATION REPORT
+  Model : RandomForestClassifier (Tuned)
+  Run ID: 180f9664a33e4bc5b94bd688685e35c3
+=
+  CLASSIFICATION REPORT
+  Model : RandomForestClassifier (Tuned)
+  Run ID: 180f9664a33e4bc5b94bd688685e35c3
+=
+  CLASSIFICATION REPORT
+  Model : RandomForestClassifier (Tuned)
+  Run ID: 180f9664a33e4bc5b94bd688685e35c3
+=
+  CLASSIFICATION REPORT
+  Model : RandomForestClassifier (Tuned)
+  Run ID: 180f9664a33e4bc5b94bd688685e35c3
+=
+  CLASSIFICATION REPORT
+  Model : RandomForestClassifier (Tuned)
+  Run ID: 180f9664a33e4bc5b94bd688685e35c3
+=
+  CLASSIFICATION REPORT
+  Model : RandomForestClassifier (Tuned)
+  Run ID: 180f9664a33e4bc5b94bd688685e35c3
+=
+  CLASSIFICATION REPORT
+  Model : RandomForestClassifier (Tuned)
+  Run ID: 180f9664a33e4bc5b94bd688685e35c3
+=
+  CLASSIFICATION REPORT
+  Model : RandomForestClassifier (Tuned)
+  Run ID: 180f9664a33e4bc5b94bd688685e35c3
+=
+  CLASSIFICATION REPORT
+  Model : RandomForestClassifier (Tuned)
+  Run ID: 180f9664a33e4bc5b94bd688685e35c3
+=
+  CLASSIFICATION REPORT
+  Model : RandomForestClassifier (Tuned)
+  Run ID: 180f9664a33e4bc5b94bd688685e35c3
+=
+  CLASSIFICATION REPORT
+  Model : RandomForestClassifier (Tuned)
+  Run ID: 180f9664a33e4bc5b94bd688685e35c3
+=
+  CLASSIFICATION REPORT
+  Model : RandomForestClassifier (Tuned)
+  Run ID: 180f9664a33e4bc5b94bd688685e35c3
+=
+  CLASSIFICATION REPORT
+  Model : RandomForestClassifier (Tuned)
+  Run ID: 180f9664a33e4bc5b94bd688685e35c3
+=
+  CLASSIFICATION REPORT
+  Model : RandomForestClassifier (Tuned)
+  Run ID: 180f9664a33e4bc5b94bd688685e35c3
+=
+  CLASSIFICATION REPORT
+  Model : RandomForestClassifier (Tuned)
+  Run ID: 180f9664a33e4bc5b94bd688685e35c3
+=
+  CLASSIFICATION REPORT
+  Model : RandomForestClassifier (Tuned)
+  Run ID: 180f9664a33e4bc5b94bd688685e35c3
+=
+  CLASSIFICATION REPORT
+  Model : RandomForestClassifier (Tuned)
+  Run ID: 180f9664a33e4bc5b94bd688685e35c3
+=
+  CLASSIFICATION REPORT
+  Model : RandomForestClassifier (Tuned)
+  Run ID: 180f9664a33e4bc5b94bd688685e35c3
+=
+  CLASSIFICATION REPORT
+  Model : RandomForestClassifier (Tuned)
+  Run ID: 180f9664a33e4bc5b94bd688685e35c3
+=
+  CLASSIFICATION REPORT
+  Model : RandomForestClassifier (Tuned)
+  Run ID: 180f9664a33e4bc5b94bd688685e35c3
+=
+  CLASSIFICATION REPORT
+  Model : RandomForestClassifier (Tuned)
+  Run ID: 180f9664a33e4bc5b94bd688685e35c3
+=
+  CLASSIFICATION REPORT
+  Model : RandomForestClassifier (Tuned)
+  Run ID: 180f9664a33e4bc5b94bd688685e35c3
+=
+  CLASSIFICATION REPORT
+  Model : RandomForestClassifier (Tuned)
+  Run ID: 180f9664a33e4bc5b94bd688685e35c3
+=
+  CLASSIFICATION REPORT
+  Model : RandomForestClassifier (Tuned)
+  Run ID: 180f9664a33e4bc5b94bd688685e35c3
+=
+  CLASSIFICATION REPORT
+  Model : RandomForestClassifier (Tuned)
+  Run ID: 180f9664a33e4bc5b94bd688685e35c3
+=
+  CLASSIFICATION REPORT
+  Model : RandomForestClassifier (Tuned)
+  Run ID: 180f9664a33e4bc5b94bd688685e35c3
+=
+  CLASSIFICATION REPORT
+  Model : RandomForestClassifier (Tuned)
+  Run ID: 180f9664a33e4bc5b94bd688685e35c3
+=
+  CLASSIFICATION REPORT
+  Model : RandomForestClassifier (Tuned)
+  Run ID: 180f9664a33e4bc5b94bd688685e35c3
+=
+  CLASSIFICATION REPORT
+  Model : RandomForestClassifier (Tuned)
+  Run ID: 180f9664a33e4bc5b94bd688685e35c3
+=
+  CLASSIFICATION REPORT
+  Model : RandomForestClassifier (Tuned)
+  Run ID: 180f9664a33e4bc5b94bd688685e35c3
+=
+  CLASSIFICATION REPORT
+  Model : RandomForestClassifier (Tuned)
+  Run ID: 180f9664a33e4bc5b94bd688685e35c3
+=
+  CLASSIFICATION REPORT
+  Model : RandomForestClassifier (Tuned)
+  Run ID: 180f9664a33e4bc5b94bd688685e35c3
+=
+  CLASSIFICATION REPORT
+  Model : RandomForestClassifier (Tuned)
+  Run ID: 180f9664a33e4bc5b94bd688685e35c3
+=
+  CLASSIFICATION REPORT
+  Model : RandomForestClassifier (Tuned)
+  Run ID: 180f9664a33e4bc5b94bd688685e35c3
+=
+  CLASSIFICATION REPORT
+  Model : RandomForestClassifier (Tuned)
+  Run ID: 180f9664a33e4bc5b94bd688685e35c3
+=
+  CLASSIFICATION REPORT
+  Model : RandomForestClassifier (Tuned)
+  Run ID: 180f9664a33e4bc5b94bd688685e35c3
+=
+  CLASSIFICATION REPORT
+  Model : RandomForestClassifier (Tuned)
+  Run ID: 180f9664a33e4bc5b94bd688685e35c3
+=
+  CLASSIFICATION REPORT
+  Model : RandomForestClassifier (Tuned)
+  Run ID: 180f9664a33e4bc5b94bd688685e35c3
+=
+  CLASSIFICATION REPORT
+  Model : RandomForestClassifier (Tuned)
+  Run ID: 180f9664a33e4bc5b94bd688685e35c3
+=
+  CLASSIFICATION REPORT
+  Model : RandomForestClassifier (Tuned)
+  Run ID: 180f9664a33e4bc5b94bd688685e35c3
+=
+  CLASSIFICATION REPORT
+  Model : RandomForestClassifier (Tuned)
+  Run ID: 180f9664a33e4bc5b94bd688685e35c3
+=
+  CLASSIFICATION REPORT
+  Model : RandomForestClassifier (Tuned)
+  Run ID: 180f9664a33e4bc5b94bd688685e35c3
+=
+  CLASSIFICATION REPORT
+  Model : RandomForestClassifier (Tuned)
+  Run ID: 180f9664a33e4bc5b94bd688685e35c3
+=
+  CLASSIFICATION REPORT
+  Model : RandomForestClassifier (Tuned)
+  Run ID: 180f9664a33e4bc5b94bd688685e35c3
+=
+  CLASSIFICATION REPORT
+  Model : RandomForestClassifier (Tuned)
+  Run ID: 180f9664a33e4bc5b94bd688685e35c3
+=
+  CLASSIFICATION REPORT
+  Model : RandomForestClassifier (Tuned)
+  Run ID: 180f9664a33e4bc5b94bd688685e35c3
+=
+  CLASSIFICATION REPORT
+  Model : RandomForestClassifier (Tuned)
+  Run ID: 180f9664a33e4bc5b94bd688685e35c3
+=
+  CLASSIFICATION REPORT
+  Model : RandomForestClassifier (Tuned)
+  Run ID: 180f9664a33e4bc5b94bd688685e35c3
+=
+  CLASSIFICATION REPORT
+  Model : RandomForestClassifier (Tuned)
+  Run ID: 180f9664a33e4bc5b94bd688685e35c3
+=
+  CLASSIFICATION REPORT
+  Model : RandomForestClassifier (Tuned)
+  Run ID: 180f9664a33e4bc5b94bd688685e35c3
+=
+  CLASSIFICATION REPORT
+  Model : RandomForestClassifier (Tuned)
+  Run ID: 180f9664a33e4bc5b94bd688685e35c3
+=
+  CLASSIFICATION REPORT
+  Model : RandomForestClassifier (Tuned)
+  Run ID: 180f9664a33e4bc5b94bd688685e35c3
+=
+  CLASSIFICATION REPORT
+  Model : RandomForestClassifier (Tuned)
+  Run ID: 180f9664a33e4bc5b94bd688685e35c3
+=
+  CLASSIFICATION REPORT
+  Model : RandomForestClassifier (Tuned)
+  Run ID: 180f9664a33e4bc5b94bd688685e35c3
+=
+  CLASSIFICATION REPORT
+  Model : RandomForestClassifier (Tuned)
+  Run ID: 180f9664a33e4bc5b94bd688685e35c3
+=
+  CLASSIFICATION REPORT
+  Model : RandomForestClassifier (Tuned)
+  Run ID: 180f9664a33e4bc5b94bd688685e35c3
+=
+  CLASSIFICATION REPORT
+  Model : RandomForestClassifier (Tuned)
+  Run ID: 180f9664a33e4bc5b94bd688685e35c3
+=
+  CLASSIFICATION REPORT
+  Model : RandomForestClassifier (Tuned)
+  Run ID: 180f9664a33e4bc5b94bd688685e35c3
+=
+  CLASSIFICATION REPORT
+  Model : RandomForestClassifier (Tuned)
+  Run ID: 180f9664a33e4bc5b94bd688685e35c3
+=
+
+              precision    recall  f1-score   support
+
+ No Rain (0)       0.93      0.92      0.92      5002
+    Rain (1)       0.48      0.50      0.49       727
+
+    accuracy                           0.87      5729
+   macro avg       0.70      0.71      0.71      5729
+weighted avg       0.87      0.87      0.87      5729
