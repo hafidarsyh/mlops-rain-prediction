@@ -1,0 +1,82 @@
+name: "Automated Preprocessing - Rain in Australia"
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "dataset/**"
+      - "preprocessing/automate_Hafid.py"
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: "Alasan menjalankan workflow secara manual"
+        required: false
+        default: "Manual trigger"
+
+jobs:
+  preprocessing:
+    name: "Run Preprocessing Pipeline"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: "Checkout Repository"
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: "Setup Python 3.12"
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12.7"
+          cache: "pip"
+
+      - name: "Install Dependencies"
+        run: |
+          python -m pip install --upgrade pip
+          pip install pandas>=2.2.3 numpy>=1.26.4 scikit-learn>=1.5.2
+
+      - name: "Verify Raw Dataset Exists"
+        run: |
+          if [ ! -f "dataset/weatherAUS.csv" ]; then
+            echo "ERROR: dataset/weatherAUS.csv tidak ditemukan!"
+            echo "Pastikan dataset sudah di-commit ke repository."
+            exit 1
+          fi
+          echo "Dataset ditemukan:"
+          wc -l dataset/weatherAUS.csv
+
+      - name: "Run Preprocessing Script"
+        run: |
+          cd preprocessing
+          python automate_Hafid.py
+
+      - name: "Verify Output Files"
+        run: |
+          echo "File hasil preprocessing:"
+          ls -lh preprocessing/weatherAUS_preprocessing/
+          echo ""
+          echo "Jumlah baris setiap file:"
+          for f in preprocessing/weatherAUS_preprocessing/*.csv; do
+            echo "  $f: $(wc -l < $f) baris"
+          done
+
+      - name: "Commit Preprocessed Dataset"
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name  "github-actions[bot]"
+
+          git add preprocessing/weatherAUS_preprocessing/
+
+          # Hanya commit jika ada perubahan
+          if git diff --staged --quiet; then
+            echo "Tidak ada perubahan pada dataset preprocessing."
+          else
+            git commit -m "chore: update preprocessed dataset [skip ci]
+
+          Trigger : ${{ github.event_name }}
+          Commit  : ${{ github.sha }}
+          Waktu   : $(date -u '+%Y-%m-%d %H:%M:%S UTC')"
+            git push
+            echo "Dataset preprocessing berhasil di-push ke repository."
+          fi
