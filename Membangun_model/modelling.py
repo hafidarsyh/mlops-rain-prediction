@@ -167,7 +167,7 @@ def main():
         y_test  = pd.read_csv(os.path.join(DATA_DIR, "y_test.csv")).squeeze()
     except FileNotFoundError as e:
         print(f"Data tidak ditemukan: {e}")
-        print("   Pastikan folder weatherAUS_preprocessing/ ada di dalam MLProject/")
+        print("Pastikan folder weatherAUS_preprocessing/ ada di dalam Folder/")
         sys.exit(1)
 
     print(f"Data: X_train={X_train.shape}, X_test={X_test.shape}")

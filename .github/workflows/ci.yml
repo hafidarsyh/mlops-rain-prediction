@@ -84,7 +84,7 @@ jobs:
           echo "n_estimators = $N_EST"
           echo "max_depth    = $MAX_D"
 
-          mlflow run Membangun_model/ \
+          mlflow run Membangun_model/modelling.py \
             --env-manager=local \
             --experiment-name "RainAUS-CI-Training" \
             -P n_estimators=$N_EST \
@@ -125,7 +125,7 @@ jobs:
           import mlflow
           client = mlflow.tracking.MlflowClient(tracking_uri="mlruns")
           run    = client.get_run("$RUN_ID")
-          print("\n📊 Metrics dari Run $RUN_ID:")
+          print("\nMetrics dari Run $RUN_ID:")
           for k, v in sorted(run.data.metrics.items()):
               print(f"   {k:<30} : {v:.4f}")
           EOF
