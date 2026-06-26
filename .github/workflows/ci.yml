@@ -1,4 +1,4 @@
-name: "CI — MLflow Training & Docker Build"
+name: "CI - MLflow Training & Docker Build"
 
 on:
   push:
