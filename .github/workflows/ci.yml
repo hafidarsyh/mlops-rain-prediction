@@ -84,14 +84,16 @@ jobs:
           echo "n_estimators = $N_EST"
           echo "max_depth    = $MAX_D"
 
-          python Membangun_model/modelling.py \
-            --n_estimators $N_EST \
-            --max_depth $MAX_D \
-            --min_samples_split 5 \
-            --min_samples_leaf 2 \
-            --max_features sqrt \
-            --test_size 0.2 \
-            --random_state 42
+          mlflow run Membangun_model/ \
+            --env-manager=local \
+            --experiment-name "RainAUS-CI-Training" \
+            -P n_estimators=$N_EST \
+            -P max_depth=$MAX_D \
+            -P min_samples_split=5 \
+            -P min_samples_leaf=2 \
+            -P max_features=sqrt \
+            -P test_size=0.2 \
+            -P random_state=42
 
       - name: "Get MLflow Run ID"
         id: get_run_id
