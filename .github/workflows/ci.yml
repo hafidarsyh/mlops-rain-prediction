@@ -17,7 +17,6 @@ on:
         required: false
         default: "20"
 
-# Izin untuk push artefak kembali ke repo
 permissions:
   contents: write
 
@@ -25,7 +24,6 @@ jobs:
   train:
     name: "Train Model (MLflow Project)"
     runs-on: ubuntu-latest
-
     outputs:
       run_id: ${{ steps.get_run_id.outputs.run_id }}
 
@@ -74,6 +72,7 @@ jobs:
           DAGSHUB_REPO:     ${{ secrets.DAGSHUB_REPO }}
           MLFLOW_TRACKING_USERNAME: ${{ secrets.MLFLOW_TRACKING_USERNAME }}
           MLFLOW_TRACKING_PASSWORD: ${{ secrets.MLFLOW_TRACKING_PASSWORD }}
+          MLFLOW_TRACKING_URI: ${{ github.workspace }}/mlruns
           GITHUB_EVENT_NAME: ${{ github.event_name }}
           GITHUB_SHA:        ${{ github.sha }}
         run: |
@@ -98,65 +97,68 @@ jobs:
       - name: "Get MLflow Run ID"
         id: get_run_id
         run: |
-          if [ -f "run_id.txt" ]; then
-            RUN_ID=$(cat run_id.txt)
-          else
-            RUN_ID=$(python - <<'EOF'
-          import mlflow, json, os
-          client = mlflow.tracking.MlflowClient(tracking_uri="mlruns")
-          exps   = client.search_experiments(filter_string="name='RainAUS-CI-Training'")
-          if exps:
-              runs = client.search_runs(
-                  experiment_ids=[exps[0].experiment_id],
-                  order_by=["start_time DESC"],
-                  max_results=1
-              )
-              print(runs[0].info.run_id if runs else "")
+          # FIX: Gunakan path absolut yang sama dengan saat training
+          RUN_ID=$(python - <<'EOF'
+          import mlflow, sys, os
+
+          tracking_uri = os.path.join(os.environ["GITHUB_WORKSPACE"], "mlruns")
+          client = mlflow.tracking.MlflowClient(tracking_uri=tracking_uri)
+
+          exps = client.search_experiments(filter_string="name='RainAUS-CI-Training'")
+          if not exps:
+              print("ERROR: experiment tidak ditemukan", file=sys.stderr)
+              sys.exit(1)
+
+          runs = client.search_runs(
+              experiment_ids=[exps[0].experiment_id],
+              order_by=["start_time DESC"],
+              max_results=1
+          )
+          if not runs:
+              print("ERROR: tidak ada run", file=sys.stderr)
+              sys.exit(1)
+
+          print(runs[0].info.run_id)
           EOF
           )
-          fi
           echo "run_id=$RUN_ID" >> $GITHUB_OUTPUT
           echo "Run ID: $RUN_ID"
 
       - name: "Print Metrics"
         run: |
-          RUN_ID=${{ steps.get_run_id.outputs.run_id }}
           python - <<EOF
-          import mlflow
-          client = mlflow.tracking.MlflowClient(tracking_uri="mlruns")
-          run    = client.get_run("$RUN_ID")
-          print("\nMetrics dari Run $RUN_ID:")
+          import mlflow, os
+
+          tracking_uri = os.path.join(os.environ["GITHUB_WORKSPACE"], "mlruns")
+          client = mlflow.tracking.MlflowClient(tracking_uri=tracking_uri)
+          run    = client.get_run("${{ steps.get_run_id.outputs.run_id }}")
+
+          print("\nMetrics:")
           for k, v in sorted(run.data.metrics.items()):
               print(f"   {k:<30} : {v:.4f}")
           EOF
 
-      - name: "Upload MLflow Artifacts to GitHub"
+      - name: "Upload MLflow Artifacts"
         uses: actions/upload-artifact@v4
         with:
           name: "mlflow-artifacts-${{ github.run_number }}"
-          path: |
-            mlruns/
-            run_id.txt
-          retention-days: 30
+          path: mlruns/
+          retention-days: 7
 
       - name: "Commit Artifacts to Repository"
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name  "github-actions[bot]"
-
-          # Tambahkan mlruns dan run_id ke tracking
-          git add mlruns/ run_id.txt || true
-
+          git add mlruns/ || true
           if git diff --staged --quiet; then
             echo "Tidak ada perubahan artefak."
           else
-            git commit -m "ci: save mlflow artifacts from run #${{ github.run_number }} [skip ci]
+            git commit -m "ci: save mlflow artifacts run #${{ github.run_number }} [skip ci]
 
           Run ID : ${{ steps.get_run_id.outputs.run_id }}
-          Trigger: ${{ github.event_name }}
           SHA    : ${{ github.sha }}"
             git push
-            echo "Artefak berhasil di-push ke repository."
+            echo "Artefak berhasil di-push."
           fi
 
   build-docker:
@@ -167,19 +169,26 @@ jobs:
     steps:
       - name: "Checkout Repository"
         uses: actions/checkout@v4
-        with:
-          ref: main
 
-      - name: "Pull Latest Changes (mlruns)"
-        run: git pull origin main
+      - name: "Download MLflow Artifacts"
+        uses: actions/download-artifact@v4
+        with:
+          name: "mlflow-artifacts-${{ github.run_number }}"
+          path: mlruns/
+
+      - name: "Verify mlruns Downloaded"
+        run: |
+          echo "Isi mlruns/:"
+          find mlruns/ -name "MLmodel" | head -5
+          echo "Run ID yang dicari: ${{ needs.train.outputs.run_id }}"
 
       - name: "Setup Python 3.12"
         uses: actions/setup-python@v5
         with:
           python-version: "3.12.7"
 
-      - name: "Install MLflow"
-        run: pip install mlflow==2.19.0
+      - name: "Install MLflow + sklearn"
+        run: pip install mlflow==2.19.0 scikit-learn==1.5.2
 
       - name: "Setup Docker Buildx"
         uses: docker/setup-buildx-action@v3
@@ -193,60 +202,51 @@ jobs:
       - name: "Build Docker Image (mlflow build-docker)"
         env:
           RUN_ID: ${{ needs.train.outputs.run_id }}
+          MLFLOW_TRACKING_URI: ${{ github.workspace }}/mlruns
         run: |
           IMAGE_NAME="${{ secrets.DOCKERHUB_USERNAME }}/rain-aus-model"
-          IMAGE_TAG="${IMAGE_NAME}:latest"
-          IMAGE_SHA="${IMAGE_NAME}:${{ github.sha }}"
 
           echo "Building Docker image..."
-          echo "Model URI : runs:/${RUN_ID}/model"
-          echo "Image     : ${IMAGE_TAG}"
+          echo "  Run ID    : ${RUN_ID}"
+          echo "  Model URI : runs:/${RUN_ID}/model"
+          echo "  Image     : ${IMAGE_NAME}:latest"
+          echo "  mlruns    : $MLFLOW_TRACKING_URI"
 
           mlflow models build-docker \
             --model-uri "runs:/${RUN_ID}/model" \
             --name "${IMAGE_NAME}" \
             --env-manager=local
 
-          # Tag tambahan dengan commit SHA
-          docker tag "${IMAGE_TAG}" "${IMAGE_SHA}"
+          docker tag "${IMAGE_NAME}:latest" "${IMAGE_NAME}:${{ github.sha }}"
 
-          echo "Docker image berhasil dibuat."
+          echo "Docker image berhasil dibuat:"
           docker images | grep "rain-aus-model"
 
       - name: "Push Image to Docker Hub"
-        env:
-          RUN_ID: ${{ needs.train.outputs.run_id }}
         run: |
           IMAGE_NAME="${{ secrets.DOCKERHUB_USERNAME }}/rain-aus-model"
-
           docker push "${IMAGE_NAME}:latest"
           docker push "${IMAGE_NAME}:${{ github.sha }}"
-
-          echo "Docker image berhasil di-push ke Docker Hub!"
-          echo "Pull: docker pull ${IMAGE_NAME}:latest"
+          echo "Push selesai: docker pull ${IMAGE_NAME}:latest"
 
       - name: "Update Docker Hub Link"
         run: |
+          mkdir -p Membangun_model
           cat > Membangun_model/docker_hub_link.txt << EOF
-          Tautan Docker Hub Image:
+          Tautan Docker Hub:
           https://hub.docker.com/r/${{ secrets.DOCKERHUB_USERNAME }}/rain-aus-model
 
-          Pull command:
-          docker pull ${{ secrets.DOCKERHUB_USERNAME }}/rain-aus-model:latest
-
-          Run command (serving model):
-          docker run -p 5000:8080 ${{ secrets.DOCKERHUB_USERNAME }}/rain-aus-model:latest
+          Pull : docker pull ${{ secrets.DOCKERHUB_USERNAME }}/rain-aus-model:latest
+          Run  : docker run -p 5000:8080 ${{ secrets.DOCKERHUB_USERNAME }}/rain-aus-model:latest
 
           Build info:
-            Run ID   : ${{ needs.train.outputs.run_id }}
-            Trigger  : ${{ github.event_name }}
-            Commit   : ${{ github.sha }}
-            Run #    : ${{ github.run_number }}
+            Run ID  : ${{ needs.train.outputs.run_id }}
+            Trigger : ${{ github.event_name }}
+            Commit  : ${{ github.sha }}
+            Run #   : ${{ github.run_number }}
           EOF
 
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name  "github-actions[bot]"
           git add Membangun_model/docker_hub_link.txt
-          git diff --staged --quiet || \
-            git commit -m "ci: update docker hub link [skip ci]" && \
-            git push || true
+          git diff --staged --quiet || (git commit -m "ci: update docker hub link [skip ci]" && git push) || true
