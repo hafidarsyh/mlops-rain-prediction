@@ -22,7 +22,7 @@ permissions:
   contents: write
 
 jobs:
-    train:
+  train:
     name: "Train Model (MLflow Project)"
     runs-on: ubuntu-latest
 
@@ -68,7 +68,6 @@ jobs:
             echo "$(basename $f): $(wc -l < $f) baris"
           done
 
-      # ── 5. Jalankan MLflow Project ────────────────────────────────────────
       - name: "Run MLflow Project"
         env:
           DAGSHUB_USERNAME: ${{ secrets.DAGSHUB_USERNAME }}
@@ -81,9 +80,9 @@ jobs:
           N_EST=${{ github.event.inputs.n_estimators || '200' }}
           MAX_D=${{ github.event.inputs.max_depth    || '20' }}
 
-          echo "▶ Menjalankan MLflow Project..."
-          echo "  n_estimators = $N_EST"
-          echo "  max_depth    = $MAX_D"
+          echo "Menjalankan MLflow Project..."
+          echo "n_estimators = $N_EST"
+          echo "max_depth    = $MAX_D"
 
           mlflow run Membangun_model/ \
             --env-manager=local \
@@ -126,7 +125,7 @@ jobs:
           import mlflow
           client = mlflow.tracking.MlflowClient(tracking_uri="mlruns")
           run    = client.get_run("$RUN_ID")
-          print("\nMetrics dari Run $RUN_ID:")
+          print("\n📊 Metrics dari Run $RUN_ID:")
           for k, v in sorted(run.data.metrics.items()):
               print(f"   {k:<30} : {v:.4f}")
           EOF
@@ -159,7 +158,6 @@ jobs:
             git push
             echo "Artefak berhasil di-push ke repository."
           fi
-
 
   build-docker:
     name: "Build & Push Docker Image (mlflow build-docker)"
@@ -200,9 +198,9 @@ jobs:
           IMAGE_TAG="${IMAGE_NAME}:latest"
           IMAGE_SHA="${IMAGE_NAME}:${{ github.sha }}"
 
-          echo "▶ Building Docker image..."
-          echo "  Model URI : runs:/${RUN_ID}/model"
-          echo "  Image     : ${IMAGE_TAG}"
+          echo "Building Docker image..."
+          echo "Model URI : runs:/${RUN_ID}/model"
+          echo "Image     : ${IMAGE_TAG}"
 
           mlflow models build-docker \
             --model-uri "runs:/${RUN_ID}/model" \
@@ -225,7 +223,7 @@ jobs:
           docker push "${IMAGE_NAME}:${{ github.sha }}"
 
           echo "Docker image berhasil di-push ke Docker Hub!"
-          echo "   Pull: docker pull ${IMAGE_NAME}:latest"
+          echo "Pull: docker pull ${IMAGE_NAME}:latest"
 
       - name: "Update Docker Hub Link"
         run: |
