@@ -186,7 +186,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: "mlflow-artifacts-${{ github.run_number }}"
-          path: mlruns/
+          path: ${{ runner.temp }}/mlruns_downloaded
 
       - name: "Setup Python 3.12"
         uses: actions/setup-python@v5
@@ -198,23 +198,24 @@ jobs:
 
       - name: "Resolve Run ID from Downloaded mlruns"
         id: resolve_run
+        env:
+          MLRUNS_DIR: ${{ runner.temp }}/mlruns_downloaded
         run: |
-          echo "Isi mlruns/ setelah download:"
-          find mlruns/ -maxdepth 3 -type d
+          echo "Isi mlruns hasil download:"
+          find "$MLRUNS_DIR" -maxdepth 3 -type d
           echo "---"
-          find mlruns/ -name "MLmodel"
+          find "$MLRUNS_DIR" -name "MLmodel"
           echo "---"
 
-          RUN_ID=$(python - <<'EOF'
+          RUN_ID=$(python - <<EOF
           import mlflow, os, sys
 
-          tracking_uri = os.path.join(os.getcwd(), "mlruns")
+          tracking_uri = os.environ["MLRUNS_DIR"]
           client = mlflow.tracking.MlflowClient(tracking_uri=tracking_uri)
 
           exps = client.search_experiments(filter_string="name='RainAUS-CI-Training'")
           if not exps:
-              print("ERROR: experiment 'RainAUS-CI-Training' tidak ditemukan "
-                    "di mlruns hasil download", file=sys.stderr)
+              print("ERROR: experiment 'RainAUS-CI-Training' tidak ditemukan", file=sys.stderr)
               sys.exit(1)
 
           runs = client.search_runs(
@@ -223,16 +224,14 @@ jobs:
               max_results=1
           )
           if not runs:
-              print("ERROR: tidak ada run ditemukan di mlruns hasil download",
-                    file=sys.stderr)
+              print("ERROR: tidak ada run ditemukan", file=sys.stderr)
               sys.exit(1)
 
           run = runs[0]
           artifact_path = os.path.join(tracking_uri, exps[0].experiment_id,
                                        run.info.run_id, "artifacts", "model", "MLmodel")
           if not os.path.exists(artifact_path):
-              print(f"ERROR: MLmodel tidak ditemukan di {artifact_path}",
-                    file=sys.stderr)
+              print(f"ERROR: MLmodel tidak ditemukan di {artifact_path}", file=sys.stderr)
               sys.exit(1)
 
           print(run.info.run_id)
@@ -259,7 +258,7 @@ jobs:
       - name: "Build Docker Image (mlflow build-docker)"
         env:
           RUN_ID: ${{ steps.resolve_run.outputs.run_id }}
-          MLFLOW_TRACKING_URI: ${{ github.workspace }}/mlruns
+          MLFLOW_TRACKING_URI: ${{ runner.temp }}/mlruns_downloaded
         run: |
           IMAGE_NAME="${{ secrets.DOCKERHUB_USERNAME }}/rain-aus-model"
 
