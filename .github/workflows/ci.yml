@@ -146,7 +146,6 @@ jobs:
 
       - name: "Commit Artifacts to Repository"
         run: |
-          run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name  "github-actions[bot]"
           git add mlruns/ || true
@@ -289,7 +288,7 @@ jobs:
 
       - name: "Update Docker Hub Link"
         run: |
-          kdir -p Membangun_model
+          mkdir -p Membangun_model
           cat > Membangun_model/docker_hub_link.txt << EOF
           Tautan Docker Hub:
           https://hub.docker.com/r/${{ secrets.DOCKERHUB_USERNAME }}/rain-aus-model
