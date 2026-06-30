@@ -1,0 +1,8 @@
+Tautan Docker Hub Image:
+https://hub.docker.com/r/hafidarsyah/rain-aus-model
+
+Pull command:
+docker pull hafidarsyah/rain-aus-model:latest
+
+Run command (serving model):
+docker run -p 5000:8080 hafidarsyah/rain-aus-model:latest
