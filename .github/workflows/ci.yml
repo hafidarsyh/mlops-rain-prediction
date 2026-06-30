@@ -161,7 +161,7 @@ jobs:
             echo "Artefak berhasil di-push."
           fi
 
-    build-docker:
+  build-docker:
     name: "Build & Push Docker Image (mlflow build-docker)"
     runs-on: ubuntu-latest
     needs: train
