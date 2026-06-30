@@ -97,7 +97,6 @@ jobs:
       - name: "Get MLflow Run ID"
         id: get_run_id
         run: |
-          # FIX: Gunakan path absolut yang sama dengan saat training
           RUN_ID=$(python - <<'EOF'
           import mlflow, sys, os
 
@@ -147,19 +146,33 @@ jobs:
 
       - name: "Commit Artifacts to Repository"
         run: |
+          run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name  "github-actions[bot]"
           git add mlruns/ || true
+
           if git diff --staged --quiet; then
             echo "Tidak ada perubahan artefak."
-          else
-            git commit -m "ci: save mlflow artifacts run #${{ github.run_number }} [skip ci]
+            exit 0
+          fi
+
+          git commit -m "ci: save mlflow artifacts run #${{ github.run_number }} [skip ci]
 
           Run ID : ${{ steps.get_run_id.outputs.run_id }}
           SHA    : ${{ github.sha }}"
-            git push
-            echo "Artefak berhasil di-push."
-          fi
+
+          for i in 1 2 3 4 5; do
+            if git push; then
+              echo "Artefak berhasil di-push."
+              break
+            fi
+            echo "Push ditolak (percobaan $i), mencoba rebase..."
+            git pull --rebase origin main
+            if [ "$i" -eq 5 ]; then
+              echo "GAGAL push setelah 5 percobaan."
+              exit 1
+            fi
+          done
 
   build-docker:
     name: "Build & Push Docker Image (mlflow build-docker)"
@@ -216,7 +229,6 @@ jobs:
               sys.exit(1)
 
           run = runs[0]
-          # Pastikan run benar-benar punya artifact model
           artifact_path = os.path.join(tracking_uri, exps[0].experiment_id,
                                        run.info.run_id, "artifacts", "model", "MLmodel")
           if not os.path.exists(artifact_path):
@@ -277,7 +289,7 @@ jobs:
 
       - name: "Update Docker Hub Link"
         run: |
-          mkdir -p Membangun_model
+          kdir -p Membangun_model
           cat > Membangun_model/docker_hub_link.txt << EOF
           Tautan Docker Hub:
           https://hub.docker.com/r/${{ secrets.DOCKERHUB_USERNAME }}/rain-aus-model
@@ -295,4 +307,23 @@ jobs:
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name  "github-actions[bot]"
           git add Membangun_model/docker_hub_link.txt
-          git diff --staged --quiet || (git commit -m "ci: update docker hub link [skip ci]" && git push) || true
+
+          if git diff --staged --quiet; then
+            echo "Tidak ada perubahan link."
+            exit 0
+          fi
+
+          git commit -m "ci: update docker hub link [skip ci]"
+
+          for i in 1 2 3 4 5; do
+            if git push; then
+              echo "Link berhasil di-push."
+              break
+            fi
+            echo "Push ditolak (percobaan $i), mencoba rebase..."
+            git pull --rebase origin main
+            if [ "$i" -eq 5 ]; then
+              echo "GAGAL push link setelah 5 percobaan (non-fatal, dilewati)."
+              break
+            fi
+          done
