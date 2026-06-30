@@ -1,0 +1,15 @@
+artifact_uri: /home/runner/work/Eksperimen_SML_Hafid/Eksperimen_SML_Hafid/mlruns/681758978581419558/d2bafb59c16841dfb68441a9b56fdc8e/artifacts
+end_time: 1782809256890
+entry_point_name: ''
+experiment_id: '681758978581419558'
+lifecycle_stage: active
+run_id: d2bafb59c16841dfb68441a9b56fdc8e
+run_name: dashing-croc-159
+run_uuid: d2bafb59c16841dfb68441a9b56fdc8e
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1782809245287
+status: 3
+tags: []
+user_id: runner
