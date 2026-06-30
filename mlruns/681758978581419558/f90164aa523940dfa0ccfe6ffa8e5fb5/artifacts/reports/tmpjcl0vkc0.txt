@@ -1,0 +1,13 @@
+============================================================
+CLASSIFICATION REPORT
+Run ID : f90164aa523940dfa0ccfe6ffa8e5fb5
+============================================================
+
+              precision    recall  f1-score   support
+
+ No Rain (0)       0.90      0.98      0.94      5002
+    Rain (1)       0.63      0.27      0.37       727
+
+    accuracy                           0.89      5729
+   macro avg       0.77      0.62      0.66      5729
+weighted avg       0.87      0.89      0.87      5729
