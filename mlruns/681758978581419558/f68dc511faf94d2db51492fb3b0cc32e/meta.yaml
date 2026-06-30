@@ -1,0 +1,15 @@
+artifact_uri: /home/runner/work/Eksperimen_SML_Hafid/Eksperimen_SML_Hafid/mlruns/681758978581419558/f68dc511faf94d2db51492fb3b0cc32e/artifacts
+end_time: 1782801539689
+entry_point_name: ''
+experiment_id: '681758978581419558'
+lifecycle_stage: active
+run_id: f68dc511faf94d2db51492fb3b0cc32e
+run_name: legendary-boar-735
+run_uuid: f68dc511faf94d2db51492fb3b0cc32e
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1782801528213
+status: 3
+tags: []
+user_id: runner
