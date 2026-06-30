@@ -1,8 +1,11 @@
-Tautan Docker Hub Image:
+Tautan Docker Hub:
 https://hub.docker.com/r/hafidarsyah/rain-aus-model
 
-Pull command:
-docker pull hafidarsyah/rain-aus-model:latest
+Pull : docker pull hafidarsyah/rain-aus-model:latest
+Run  : docker run -p 5000:8080 hafidarsyah/rain-aus-model:latest
 
-Run command (serving model):
-docker run -p 5000:8080 hafidarsyah/rain-aus-model:latest
+Build info:
+  Run ID  : a39d6a197c8a420c90cded31d1715b8c
+  Trigger : workflow_dispatch
+  Commit  : e75c729d33eed62dca292419caf6b6872095bfd9
+  Run #   : 15
