@@ -283,11 +283,6 @@ jobs:
           docker push "${IMAGE_NAME}:${{ github.sha }}"
           echo "Push selesai: docker pull ${IMAGE_NAME}:latest"
 
-      - name: "Clean mlruns Before Git Operations"
-        run: |
-          rm -rf mlruns/
-          echo "mlruns/ dihapus, working tree git sekarang bersih."
-
       - name: "Update Docker Hub Link"
         run: |
           mkdir -p Membangun_model
@@ -316,12 +311,19 @@ jobs:
 
           git commit -m "ci: update docker hub link [skip ci]"
 
+          git checkout -- . 2>/dev/null || true
+          git clean -fd mlruns/ 2>/dev/null || true
+
           for i in 1 2 3 4 5; do
             if git push; then
               echo "Link berhasil di-push."
               break
             fi
             echo "Push ditolak (percobaan $i), mencoba rebase..."
+
+            git checkout -- . 2>/dev/null || true
+            git clean -fd mlruns/ 2>/dev/null || true
+
             git pull --rebase origin main
             if [ "$i" -eq 5 ]; then
               echo "GAGAL push link setelah 5 percobaan (non-fatal, dilewati)."
