@@ -1,0 +1,14 @@
+aliases: []
+creation_timestamp: 1782800777408
+current_stage: None
+description: null
+last_updated_timestamp: 1782800777408
+name: RainAUS_RF_CI
+run_id: 9f423529a7974ea1907e8e59e431aed7
+run_link: null
+source: /home/runner/work/Eksperimen_SML_Hafid/Eksperimen_SML_Hafid/mlruns/681758978581419558/9f423529a7974ea1907e8e59e431aed7/artifacts/model
+status: READY
+status_message: null
+storage_location: /home/runner/work/Eksperimen_SML_Hafid/Eksperimen_SML_Hafid/mlruns/681758978581419558/9f423529a7974ea1907e8e59e431aed7/artifacts/model
+user_id: null
+version: 2

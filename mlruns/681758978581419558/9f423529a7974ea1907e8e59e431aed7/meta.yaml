@@ -1,0 +1,15 @@
+artifact_uri: /home/runner/work/Eksperimen_SML_Hafid/Eksperimen_SML_Hafid/mlruns/681758978581419558/9f423529a7974ea1907e8e59e431aed7/artifacts
+end_time: 1782800778840
+entry_point_name: ''
+experiment_id: '681758978581419558'
+lifecycle_stage: active
+run_id: 9f423529a7974ea1907e8e59e431aed7
+run_name: bouncy-elk-526
+run_uuid: 9f423529a7974ea1907e8e59e431aed7
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1782800767847
+status: 3
+tags: []
+user_id: runner
