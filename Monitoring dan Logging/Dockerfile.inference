@@ -1,0 +1,16 @@
+
+# Dockerfile.inference
+
+FROM python:3.12-slim
+
+WORKDIR /app
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY 3.prometheus_exporter.py .
+COPY 7.inference.py .
+
+EXPOSE 5000 8001
+
+CMD ["python", "7.inference.py"]

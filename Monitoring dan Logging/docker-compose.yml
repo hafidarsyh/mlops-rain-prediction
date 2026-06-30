@@ -1,0 +1,81 @@
+version: "3.9"
+
+services:
+  prometheus:
+    image: prom/prometheus:v2.51.2
+    container_name: prometheus_rain_aus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./2.prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus_data:/prometheus
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+      - "--storage.tsdb.retention.time=7d"
+      - "--web.enable-lifecycle"
+    restart: unless-stopped
+    networks:
+      - monitoring
+
+  grafana:
+    image: grafana/grafana:10.4.2
+    container_name: grafana_rain_aus
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana_data:/var/lib/grafana
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_USERS_ALLOW_SIGN_UP=false
+    depends_on:
+      - prometheus
+    restart: unless-stopped
+    networks:
+      - monitoring
+
+  node_exporter:
+    image: prom/node-exporter:v1.7.0
+    container_name: node_exporter_rain_aus
+    ports:
+      - "9100:9100"
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - "--path.procfs=/host/proc"
+      - "--path.sysfs=/host/sys"
+      - "--collector.filesystem.mount-points-exclude=^/(sys|proc|dev|host|etc)($$|/)"
+    restart: unless-stopped
+    networks:
+      - monitoring
+
+  ml_inference:
+    build:
+      context: .
+      dockerfile: Dockerfile.inference
+    container_name: ml_inference_rain_aus
+    ports:
+      - "5000:5000"   # FastAPI
+      - "8001:8001"   # Prometheus exporter
+    volumes:
+      - ../mlruns:/app/mlruns
+    environment:
+      - MLFLOW_TRACKING_URI=/app/mlruns
+      - MODEL_URI=file:///app/mlruns/681758978581419558/f90164aa523940dfa0ccfe6ffa8e5fb5/artifacts/model
+      - EXPORTER_PORT=8001
+      - INFERENCE_PORT=5000
+      - MLFLOW_ALLOW_FILE_STORE=true
+    restart: unless-stopped
+    networks:
+      - monitoring
+
+volumes:
+  prometheus_data:
+  grafana_data:
+
+networks:
+  monitoring:
+    driver: bridge
