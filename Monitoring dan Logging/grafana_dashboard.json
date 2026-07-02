@@ -271,7 +271,7 @@
   "time": { "from": "now-1h", "to": "now" },
   "timepicker": {},
   "timezone": "browser",
-  "title": "Hafid — Rain in Australia ML Dashboard",
+  "title": "Hafid - Rain in Australia ML Dashboard",
   "uid": "rain-aus-hafid",
   "version": 1
 }

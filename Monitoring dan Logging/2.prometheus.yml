@@ -24,14 +24,6 @@ scrape_configs:
           service: "ml-inference"
           model:   "RandomForestClassifier"
 
-  - job_name: "rain_aus_inference_api"
-    metrics_path: /metrics
-    scrape_interval: 15s
-    static_configs:
-      - targets: ["ml_inference:5000"]
-        labels:
-          service: "fastapi"
-
   - job_name: "node_exporter"
     metrics_path: /metrics
     scrape_interval: 30s
