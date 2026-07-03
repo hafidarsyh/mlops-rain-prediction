@@ -5,7 +5,7 @@ Pull : docker pull hafidarsyah/rain-aus-model:latest
 Run  : docker run -p 5000:8080 hafidarsyah/rain-aus-model:latest
 
 Build info:
-  Run ID  : d2bafb59c16841dfb68441a9b56fdc8e
+  Run ID  : ae9f5ee7c59943c0ac9c159eb673a608
   Trigger : workflow_dispatch
-  Commit  : 875e85d144efd440b950b17ad7716462c31706ce
-  Run #   : 16
+  Commit  : aa8b729358276da8a81a9542ba3b6677237b49e0
+  Run #   : 17
