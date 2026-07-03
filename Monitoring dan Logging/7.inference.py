@@ -205,6 +205,12 @@ async def predict(payload: PredictInput):
         input_dict = payload.model_dump(exclude={"actual_label"})
         df = pd.DataFrame([input_dict])
 
+        if hasattr(model, "feature_names_in_"):
+            try:
+                df = df[model.feature_names_in_]
+            except KeyError as e:
+                raise ValueError(f"Kolom input tidak cocok dengan model training. Detail: {e}")
+
         y_pred  = int(model.predict(df)[0])
         y_proba = float(model.predict_proba(df)[0][1])
 
@@ -215,7 +221,7 @@ async def predict(payload: PredictInput):
         return PredictResponse(
             prediction       = y_pred,
             probability_rain = round(y_proba, 4),
-            label            = "Hujan ☔" if y_pred == 1 else "Tidak Hujan ☀️",
+            label            = "Hujan" if y_pred == 1 else "Tidak Hujan",
             latency_ms       = round(latency * 1000, 2),
             model_version    = MODEL_URI,
         )
@@ -243,6 +249,13 @@ async def predict_batch(payload: BatchPredictInput):
         for item in payload.data:
             input_dict = item.model_dump(exclude={"actual_label"})
             df      = pd.DataFrame([input_dict])
+
+            if hasattr(model, "feature_names_in_"):
+                try:
+                    df = df[model.feature_names_in_]
+                except KeyError as e:
+                    raise ValueError(f"Kolom input tidak cocok dengan model training. Detail: {e}")
+
             y_pred  = int(model.predict(df)[0])
             y_proba = float(model.predict_proba(df)[0][1])
 
@@ -252,7 +265,7 @@ async def predict_batch(payload: BatchPredictInput):
             results.append({
                 "prediction"       : y_pred,
                 "probability_rain" : round(y_proba, 4),
-                "label"            : "Hujan ☔" if y_pred == 1 else "Tidak Hujan ☀️",
+                "label"            : "Hujan" if y_pred == 1 else "Tidak Hujan",
             })
 
         total_latency = time.time() - start_time
@@ -268,7 +281,6 @@ async def predict_batch(payload: BatchPredictInput):
 
     finally:
         ACTIVE_REQUESTS.dec()
-
 
 # Main
 if __name__ == "__main__":
