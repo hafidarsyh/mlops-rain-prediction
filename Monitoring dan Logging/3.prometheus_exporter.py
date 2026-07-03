@@ -1,20 +1,3 @@
-"""
-prometheus_exporter.py
-======================
-Custom Prometheus exporter untuk monitoring sistem ML Rain in Australia.
-Mendefinisikan semua metrik dan menjalankan HTTP server di port 8001.
-
-Metrik yang dipantau (15 metrik, memenuhi Advanced ≥ 10):
-  System  : cpu_usage, memory_usage, disk_usage
-  Serving : requests_total, latency, errors_total, active_requests
-  ML      : predictions_rain, predictions_no_rain, confidence_avg,
-            confidence_histogram, accuracy, precision, recall, f1, roc_auc
-  Drift   : data_drift_score
-
-Author : Hafid
-Port   : 8001 (Prometheus scrape target)
-"""
-
 import os
 import time
 import threading
@@ -232,4 +215,4 @@ if __name__ == "__main__":
         while True:
             time.sleep(1)
     except KeyboardInterrupt:
-        print("\n🛑 Exporter dihentikan.")
+        print("\n  Exporter dihentikan.")
