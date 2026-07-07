@@ -53,7 +53,7 @@ Proyek ini merangkum seluruh siklus hidup pengembangan sistem *Machine Learning*
 ## 📂 Struktur Repositori
 
 ```text
-Eksperimen_SML_Hafid/
+mlops-rain-prediction/
 ├── .github/workflows/
 │   └── ci.yml                          # Workflow GitHub Actions untuk otomatisasi CI/CD & Docker build
 ├── dataset/
@@ -101,8 +101,8 @@ Pastikan lingkungan Anda telah terpasang:
 
 ### 2. Kloning Repositori & Instalasi Dependensi
 ```bash
-git clone https://github.com/hafidarsyh/Eksperimen_SML_Hafid.git
-cd Eksperimen_SML_Hafid
+git clone https://github.com/hafidarsyh/mlops-rain-prediction.git
+cd mlops-rain-prediction
 pip install -r requirements.txt
 ```
 
